@@ -1,6 +1,6 @@
 <?php
 
-namespace Vormkracht10\MinifyHtml\Middleware;
+namespace Backstage\MinifyHtml\Middleware;
 
 use Illuminate\Http\Request;
 

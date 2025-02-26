@@ -1,24 +1,27 @@
 {
-    "name": "vormkracht10/laravel-minify-html-middleware",
+    "name": "backstage/laravel-minify-html-middleware",
     "description": "This package minifies HTML responses in Laravel safely.",
     "keywords": [
-        "Vormkracht10",
+        "backstage",
+        "vormkracht10",
         "laravel",
-        "laravel-minify-html-middleware"
+        "php",
+        "minify-html",
+        "middleware"
     ],
-    "homepage": "https://github.com/vormkracht10/laravel-minify-html-middleware",
+    "homepage": "https://github.com/backstagephp/laravel-minify-html-middleware",
     "license": "MIT",
     "authors": [
         {
             "name": "Mark van Eijk",
-            "email": "mark@vormkracht10.nl",
+            "email": "mark@backstagephp.com",
             "role": "Developer"
         }
     ],
     "require": {
         "php": "^8.2",
         "spatie/laravel-package-tools": "^1.16",
-        "illuminate/contracts": "^10.0||^11.0"
+        "illuminate/contracts": "^10.0 || ^11.0 || ^12.0"
     },
     "require-dev": {
         "laravel/pint": "^1.14",
@@ -34,12 +37,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Vormkracht10\\MinifyHtml\\": "src/"
+            "Backstage\\MinifyHtml\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Vormkracht10\\MinifyHtml\\Tests\\": "tests/",
+            "Backstage\\MinifyHtml\\Tests\\": "tests/",
             "Workbench\\App\\": "workbench/app/"
         }
     },
@@ -71,10 +74,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Vormkracht10\\MinifyHtml\\MinifyHtmlServiceProvider"
+                "Backstage\\MinifyHtml\\MinifyHtmlServiceProvider"
             ],
             "aliases": {
-                "MinifyHtml": "Vormkracht10\\MinifyHtml\\Facades\\MinifyHtml"
+                "MinifyHtml": "Backstage\\MinifyHtml\\Facades\\MinifyHtml"
             }
         }
     },

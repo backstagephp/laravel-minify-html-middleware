@@ -1,6 +1,6 @@
 <?php
 
-namespace Vormkracht10\MinifyHtml;
+namespace Backstage\MinifyHtml;
 
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;

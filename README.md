@@ -1,9 +1,9 @@
 # Laravel HTML Minify Middleware
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/vormkracht10/laravel-minify-html-middleware.svg?style=flat-square)](https://packagist.org/packages/vormkracht10/laravel-minify-html-middleware)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/vormkracht10/laravel-minify-html-middleware/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/vormkracht10/laravel-minify-html-middleware/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/vormkracht10/laravel-minify-html-middleware/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/vormkracht10/laravel-minify-html-middleware/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/vormkracht10/laravel-minify-html-middleware.svg?style=flat-square)](https://packagist.org/packages/vormkracht10/laravel-minify-html-middleware)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/backstage/laravel-minify-html-middleware.svg?style=flat-square)](https://packagist.org/packages/backstage/laravel-minify-html-middleware)
+[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/backstagephp/laravel-minify-html-middleware/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/backstagephp/laravel-minify-html-middleware/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/backstagephp/laravel-minify-html-middleware/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/backstagephp/laravel-minify-html-middleware/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
+[![Total Downloads](https://img.shields.io/packagist/dt/backstage/laravel-minify-html-middleware.svg?style=flat-square)](https://packagist.org/packages/backstage/laravel-minify-html-middleware)
 
 This package minifies HTML responses safely within Laravel using middleware.
 
@@ -12,7 +12,7 @@ This package minifies HTML responses safely within Laravel using middleware.
 You can install the package via composer:
 
 ```bash
-composer require vormkracht10/laravel-minify-html-middleware
+composer require backstage/laravel-minify-html-middleware
 ```
 
 You can publish and run the migrations with:
@@ -43,10 +43,7 @@ php artisan vendor:publish --tag="laravel-minify-html-middleware-views"
 
 ## Usage
 
-```php
-$MinifyHtml = new Vormkracht10\MinifyHtml();
-echo $MinifyHtml->echoPhrase('Hello, Vormkracht10!');
-```
+...
 
 ## Testing
 

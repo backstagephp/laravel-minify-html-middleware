@@ -1,6 +1,6 @@
 <?php
 
-namespace Vormkracht10\MinifyHtml\Transformers;
+namespace Backstage\MinifyHtml\Transformers;
 
 class RemoveWhitespace
 {
