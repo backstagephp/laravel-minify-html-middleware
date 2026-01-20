@@ -5,7 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 it('minifies HTML responses for GET requests', function () {
-    $middleware = new MinifyHtml();
+    $middleware = new MinifyHtml;
 
     $request = Request::create('/', 'GET');
     $request->headers->set('Accept', 'text/html');
@@ -34,7 +34,7 @@ HTML;
 });
 
 it('minifies HTML responses for HEAD requests', function () {
-    $middleware = new MinifyHtml();
+    $middleware = new MinifyHtml;
 
     $request = Request::create('/', 'HEAD');
     $request->headers->set('Accept', 'text/html');
@@ -58,7 +58,7 @@ HTML;
 });
 
 it('does not minify POST requests', function () {
-    $middleware = new MinifyHtml();
+    $middleware = new MinifyHtml;
 
     $request = Request::create('/', 'POST');
     $request->headers->set('Accept', 'text/html');
@@ -73,7 +73,7 @@ it('does not minify POST requests', function () {
 });
 
 it('does not minify PUT requests', function () {
-    $middleware = new MinifyHtml();
+    $middleware = new MinifyHtml;
 
     $request = Request::create('/', 'PUT');
     $request->headers->set('Accept', 'text/html');
@@ -88,7 +88,7 @@ it('does not minify PUT requests', function () {
 });
 
 it('does not minify DELETE requests', function () {
-    $middleware = new MinifyHtml();
+    $middleware = new MinifyHtml;
 
     $request = Request::create('/', 'DELETE');
     $request->headers->set('Accept', 'text/html');
@@ -103,7 +103,7 @@ it('does not minify DELETE requests', function () {
 });
 
 it('does not minify JSON requests', function () {
-    $middleware = new MinifyHtml();
+    $middleware = new MinifyHtml;
 
     $request = Request::create('/', 'GET');
     $request->headers->set('Accept', 'application/json');
@@ -119,7 +119,7 @@ it('does not minify JSON requests', function () {
 });
 
 it('does not minify XMLHttpRequest requests', function () {
-    $middleware = new MinifyHtml();
+    $middleware = new MinifyHtml;
 
     $request = Request::create('/', 'GET');
     $request->headers->set('Accept', 'text/html');
@@ -135,7 +135,7 @@ it('does not minify XMLHttpRequest requests', function () {
 });
 
 it('checks for precognitive requests', function () {
-    $middleware = new MinifyHtml();
+    $middleware = new MinifyHtml;
 
     $request = Request::create('/', 'GET');
     $request->headers->set('Accept', 'text/html');
@@ -154,7 +154,7 @@ it('checks for precognitive requests', function () {
 });
 
 it('does not minify responses without Accept header containing html', function () {
-    $middleware = new MinifyHtml();
+    $middleware = new MinifyHtml;
 
     $request = Request::create('/', 'GET');
     $request->headers->set('Accept', 'application/xml');
@@ -169,7 +169,7 @@ it('does not minify responses without Accept header containing html', function (
 });
 
 it('removes HTML comments', function () {
-    $middleware = new MinifyHtml();
+    $middleware = new MinifyHtml;
 
     $request = Request::create('/', 'GET');
     $request->headers->set('Accept', 'text/html');
@@ -196,7 +196,7 @@ HTML;
 });
 
 it('minifies HTML with Livewire comments', function () {
-    $middleware = new MinifyHtml();
+    $middleware = new MinifyHtml;
 
     $request = Request::create('/', 'GET');
     $request->headers->set('Accept', 'text/html');
@@ -223,7 +223,7 @@ HTML;
 });
 
 it('preserves Knockout comments', function () {
-    $middleware = new MinifyHtml();
+    $middleware = new MinifyHtml;
 
     $request = Request::create('/', 'GET');
     $request->headers->set('Accept', 'text/html');
@@ -250,7 +250,7 @@ HTML;
 });
 
 it('preserves content in pre tags', function () {
-    $middleware = new MinifyHtml();
+    $middleware = new MinifyHtml;
 
     $request = Request::create('/', 'GET');
     $request->headers->set('Accept', 'text/html');
@@ -278,7 +278,7 @@ HTML;
 });
 
 it('preserves content in textarea tags', function () {
-    $middleware = new MinifyHtml();
+    $middleware = new MinifyHtml;
 
     $request = Request::create('/', 'GET');
     $request->headers->set('Accept', 'text/html');
@@ -306,7 +306,7 @@ HTML;
 });
 
 it('trims whitespace in script tags', function () {
-    $middleware = new MinifyHtml();
+    $middleware = new MinifyHtml;
 
     $request = Request::create('/', 'GET');
     $request->headers->set('Accept', 'text/html');
@@ -336,7 +336,7 @@ it('uses custom transformers from config', function () {
         \Backstage\MinifyHtml\Transformers\RemoveComments::class,
     ]);
 
-    $middleware = new MinifyHtml();
+    $middleware = new MinifyHtml;
 
     $request = Request::create('/', 'GET');
     $request->headers->set('Accept', 'text/html');
@@ -364,7 +364,7 @@ HTML;
 });
 
 it('handles empty responses gracefully', function () {
-    $middleware = new MinifyHtml();
+    $middleware = new MinifyHtml;
 
     $request = Request::create('/', 'GET');
     $request->headers->set('Accept', 'text/html');
@@ -377,7 +377,7 @@ it('handles empty responses gracefully', function () {
 });
 
 it('handles responses with only whitespace', function () {
-    $middleware = new MinifyHtml();
+    $middleware = new MinifyHtml;
 
     $request = Request::create('/', 'GET');
     $request->headers->set('Accept', 'text/html');

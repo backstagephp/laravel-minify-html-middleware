@@ -3,7 +3,7 @@
 use Backstage\MinifyHtml\Transformers\RemoveComments;
 
 beforeEach(function () {
-    $this->transformer = new RemoveComments();
+    $this->transformer = new RemoveComments;
 });
 
 it('removes basic HTML comments', function () {

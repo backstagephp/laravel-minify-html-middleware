@@ -3,7 +3,7 @@
 use Backstage\MinifyHtml\Transformers\TrimScripts;
 
 beforeEach(function () {
-    $this->transformer = new TrimScripts();
+    $this->transformer = new TrimScripts;
 });
 
 it('trims leading whitespace from script content', function () {

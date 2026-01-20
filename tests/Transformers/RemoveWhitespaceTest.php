@@ -3,7 +3,7 @@
 use Backstage\MinifyHtml\Transformers\RemoveWhitespace;
 
 beforeEach(function () {
-    $this->transformer = new RemoveWhitespace();
+    $this->transformer = new RemoveWhitespace;
 });
 
 it('removes multiple spaces', function () {
