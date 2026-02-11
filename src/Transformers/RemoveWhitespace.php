@@ -15,10 +15,10 @@ class RemoveWhitespace
     public function hideElements(string $html): string
     {
         foreach ($this->ignoreElements as $element) {
-            $pattern = '~<'.$element.'[^>]*>(.*)</'.$element.'>~Uuis';
+            $pattern = '~<' . $element . '[^>]*>(.*)</' . $element . '>~Uuis';
             if (preg_match_all($pattern, $html, $matches, PREG_SET_ORDER)) {
                 foreach ($matches as $match) {
-                    $this->hiddenElements['#'.md5($match[1]).'#'] = $match[1];
+                    $this->hiddenElements['#' . md5($match[1]) . '#'] = $match[1];
                 }
             }
         }
