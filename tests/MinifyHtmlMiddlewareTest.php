@@ -1,6 +1,7 @@
 <?php
 
 use Backstage\MinifyHtml\Middleware\MinifyHtml;
+use Backstage\MinifyHtml\Transformers\RemoveComments;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -333,7 +334,7 @@ HTML;
 
 it('uses custom transformers from config', function () {
     config()->set('minify-html.transformers', [
-        \Backstage\MinifyHtml\Transformers\RemoveComments::class,
+        RemoveComments::class,
     ]);
 
     $middleware = new MinifyHtml;

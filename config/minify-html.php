@@ -1,9 +1,13 @@
 <?php
 
+use Backstage\MinifyHtml\Transformers\RemoveComments;
+use Backstage\MinifyHtml\Transformers\RemoveWhitespace;
+use Backstage\MinifyHtml\Transformers\TrimScripts;
+
 return [
     'transformers' => [
-        Backstage\MinifyHtml\Transformers\RemoveComments::class,
-        Backstage\MinifyHtml\Transformers\RemoveWhitespace::class,
-        Backstage\MinifyHtml\Transformers\TrimScripts::class,
+        RemoveComments::class,
+        RemoveWhitespace::class,
+        TrimScripts::class,
     ],
 ];
