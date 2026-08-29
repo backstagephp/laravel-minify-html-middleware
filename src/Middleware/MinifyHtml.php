@@ -27,7 +27,15 @@ class MinifyHtml
             $content = (new $transformer)->transform($content);
         }
 
-        return $response->setContent($content);
+        $original = $response->original ?? null;
+
+        $response->setContent($content);
+
+        if ($original !== null) {
+            $response->original = $original;
+        }
+
+        return $response;
     }
 
     public function shouldMinifyHtml(Request $request)

@@ -2,9 +2,11 @@
 
 use Backstage\MinifyHtml\Middleware\MinifyHtml;
 use Backstage\MinifyHtml\Transformers\RemoveComments;
+use Illuminate\Contracts\View\View as ViewContract;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\View;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -515,4 +517,42 @@ it('does not fail when the request has no Accept header', function () {
     });
 
     expect($response->getContent())->toBe($html);
+});
+
+it('preserves the response original payload while minifying', function () {
+    $middleware = new MinifyHtml;
+
+    $request = Request::create('/', 'GET');
+    $request->headers->set('Accept', 'text/html');
+
+    $page = ['component' => 'Dashboard', 'props' => ['name' => 'Test']];
+
+    $response = $middleware->handle($request, function () use ($page) {
+        $response = new Response("<html>\n    <body>    Test    </body>\n</html>");
+        $response->original = $page;
+
+        return $response;
+    });
+
+    expect($response->original)->toBe($page)
+        ->and($response->getContent())->not->toContain('    ');
+});
+
+it('preserves a renderable original so view assertions keep working', function () {
+    $middleware = new MinifyHtml;
+
+    $request = Request::create('/', 'GET');
+    $request->headers->set('Accept', 'text/html');
+
+    View::addLocation(__DIR__ . '/stubs');
+
+    $view = View::make('page', ['page' => ['component' => 'Dashboard']]);
+
+    $response = $middleware->handle($request, function () use ($view) {
+        return new Response($view);
+    });
+
+    expect($response->original)->toBeInstanceOf(ViewContract::class)
+        ->and($response->original->getData()['page'])->toBe(['component' => 'Dashboard'])
+        ->and($response->getContent())->not->toContain('    ');
 });
