@@ -1,8 +1,12 @@
 <?php
 
 use Backstage\MinifyHtml\Middleware\MinifyHtml;
+use Backstage\MinifyHtml\Transformers\RemoveComments;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 it('minifies HTML responses for GET requests', function () {
     $middleware = new MinifyHtml;
@@ -333,7 +337,7 @@ HTML;
 
 it('uses custom transformers from config', function () {
     config()->set('minify-html.transformers', [
-        \Backstage\MinifyHtml\Transformers\RemoveComments::class,
+        RemoveComments::class,
     ]);
 
     $middleware = new MinifyHtml;
@@ -393,4 +397,122 @@ it('handles responses with only whitespace', function () {
     // Multiple spaces are reduced to empty or single space
     expect($content)->toBeString()
         ->and(strlen($content))->toBeLessThanOrEqual(1);
+});
+
+it('does not minify streamed responses', function () {
+    $middleware = new MinifyHtml;
+
+    $request = Request::create('/', 'GET');
+    $request->headers->set('Accept', 'text/html');
+
+    $body = "line one\n\n    line two\n";
+
+    $response = $middleware->handle($request, function () use ($body) {
+        return new StreamedResponse(function () use ($body) {
+            echo $body;
+        });
+    });
+
+    expect($response)->toBeInstanceOf(StreamedResponse::class);
+
+    ob_start();
+    $response->sendContent();
+
+    expect(ob_get_clean())->toBe($body);
+});
+
+it('does not minify streamed downloads', function () {
+    $middleware = new MinifyHtml;
+
+    $request = Request::create('/', 'GET');
+    $request->headers->set('Accept', 'text/html');
+
+    $response = $middleware->handle($request, function () {
+        return response()->streamDownload(function () {
+            echo '    dump    ';
+        }, 'dump.txt');
+    });
+
+    ob_start();
+    $response->sendContent();
+
+    expect(ob_get_clean())->toBe('    dump    ');
+});
+
+it('does not minify binary file responses', function () {
+    $middleware = new MinifyHtml;
+
+    $request = Request::create('/', 'GET');
+    $request->headers->set('Accept', 'text/html');
+
+    $path = tempnam(sys_get_temp_dir(), 'minify');
+    file_put_contents($path, '<html>    <body>    Test    </body>    </html>');
+
+    $response = $middleware->handle($request, function () use ($path) {
+        return new BinaryFileResponse($path);
+    });
+
+    expect($response)->toBeInstanceOf(BinaryFileResponse::class)
+        ->and(file_get_contents($response->getFile()->getPathname()))
+        ->toBe('<html>    <body>    Test    </body>    </html>');
+
+    unlink($path);
+});
+
+it('does not minify responses declaring a non-html content type', function () {
+    $middleware = new MinifyHtml;
+
+    $request = Request::create('/', 'GET');
+    $request->headers->set('Accept', 'text/html');
+
+    $xml = "<rss>\n    <channel>    Test    </channel>\n</rss>";
+
+    $response = $middleware->handle($request, function () use ($xml) {
+        return new Response($xml, 200, ['Content-Type' => 'application/xml']);
+    });
+
+    expect($response->getContent())->toBe($xml);
+});
+
+it('does not minify json responses returned to a browser', function () {
+    $middleware = new MinifyHtml;
+
+    $request = Request::create('/', 'GET');
+    $request->headers->set('Accept', 'text/html');
+
+    $response = $middleware->handle($request, function () {
+        return new JsonResponse(['value' => "a\n    b"]);
+    });
+
+    expect($response->getContent())->toBe(json_encode(['value' => "a\n    b"]));
+});
+
+it('still minifies responses that declare an html content type', function () {
+    $middleware = new MinifyHtml;
+
+    $request = Request::create('/', 'GET');
+    $request->headers->set('Accept', 'text/html');
+
+    $response = $middleware->handle($request, function () {
+        return new Response("<html>\n    <body>    Test    </body>\n</html>", 200, [
+            'Content-Type' => 'text/html; charset=UTF-8',
+        ]);
+    });
+
+    expect($response->getContent())->not->toContain('    ');
+});
+
+it('does not fail when the request has no Accept header', function () {
+    $middleware = new MinifyHtml;
+
+    $request = Request::create('/', 'GET');
+    $request->headers->remove('Accept');
+
+    $html = '<html>    <body>    Test    </body>    </html>';
+
+    $response = $middleware->handle($request, function () use ($html) {
+        return new Response($html);
+    });
+
+    expect($response->getContent())->toBe($html);
 });
