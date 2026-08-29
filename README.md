@@ -157,16 +157,33 @@ Route::middleware(['minify'])->group(function () {
 
 ### Conditional Minification
 
-The middleware automatically determines if a response should be minified based on several conditions:
+The middleware automatically determines if a response should be minified based on several conditions.
+
+Looking at the **request**:
 
 - ✅ Request method is `GET` or `HEAD`
-- ✅ Response contains HTML (checks `Accept` header)
+- ✅ The `Accept` header asks for HTML
 - ❌ Request is JSON
 - ❌ Request is AJAX (XMLHttpRequest)
 - ❌ Request is a precognitive request
-- ❌ Response has no DOCTYPE declaration in the first 100 characters
+- ❌ Request body starts with a DOCTYPE declaration in the first 100 characters
 
-This ensures that only actual HTML page responses are minified, avoiding issues with API responses or partial HTML fragments.
+Looking at the **response**:
+
+- ❌ Response is a `StreamedResponse` (including `response()->streamDownload(...)`)
+- ❌ Response is a `BinaryFileResponse` (including `response()->download(...)`)
+- ❌ Response declares a `Content-Type` that is not HTML (JSON, XML, CSV, plain text, …)
+- ❌ Response body is not a readable string
+
+The response checks matter because the request checks alone are not enough. A file
+download triggered by a normal browser navigation still arrives with
+`Accept: text/html`, but a streamed or binary response has no readable body and
+rejects `setContent()` — minifying one throws a `LogicException`. A response with no
+`Content-Type` header yet is treated as HTML, since Symfony defaults it to `text/html`
+when preparing the response.
+
+Together this ensures that only actual HTML page responses are minified, avoiding issues
+with API responses, file downloads, feeds, and partial HTML fragments.
 
 ## Configuration
 

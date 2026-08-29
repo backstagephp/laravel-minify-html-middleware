@@ -3,6 +3,9 @@
 namespace Backstage\MinifyHtml\Middleware;
 
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class MinifyHtml
 {
@@ -13,6 +16,10 @@ class MinifyHtml
         }
 
         $response = $next($request);
+
+        if (! $this->shouldMinifyResponse($response)) {
+            return $response;
+        }
 
         $content = $response->getContent();
 
@@ -33,7 +40,7 @@ class MinifyHtml
             return false;
         }
 
-        if (! str_contains($request->header('Accept'), 'html')) {
+        if (! str_contains((string) $request->header('Accept'), 'html')) {
             return false;
         }
 
@@ -46,5 +53,31 @@ class MinifyHtml
         }
 
         return true;
+    }
+
+    /**
+     * A browser asking for HTML still reaches file downloads and feeds. Streamed and
+     * binary responses carry no readable body and reject setContent(), so minifying
+     * one throws; anything declaring a non-HTML content type is left alone.
+     *
+     * @param  mixed  $response
+     */
+    public function shouldMinifyResponse($response): bool
+    {
+        if (! $response instanceof Response) {
+            return false;
+        }
+
+        if ($response instanceof StreamedResponse || $response instanceof BinaryFileResponse) {
+            return false;
+        }
+
+        $contentType = $response->headers->get('Content-Type');
+
+        if ($contentType !== null && ! str_contains($contentType, 'html')) {
+            return false;
+        }
+
+        return is_string($response->getContent());
     }
 }
