@@ -544,7 +544,7 @@ it('preserves a renderable original so view assertions keep working', function (
     $request = Request::create('/', 'GET');
     $request->headers->set('Accept', 'text/html');
 
-    View::addLocation(__DIR__ . '/stubs');
+    View::addLocation(__DIR__.'/stubs');
 
     $view = View::make('page', ['page' => ['component' => 'Dashboard']]);
 
